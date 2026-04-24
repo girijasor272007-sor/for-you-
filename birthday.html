@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Someone Special ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --secondary: #ff758f;
+            --glass: rgba(255, 255, 255, 0.1);
+            --text: #fff;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #1a0a1a 0%, #3d1221 100%);
+            color: var(--text);
+            text-align: center;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Floating Hearts Background */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .screen {
+            display: none;
+            padding: 40px 20px;
+            max-width: 600px;
+            margin: auto;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        h1, h2 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--secondary);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+            margin: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-3px) scale(1.05);
+            background: var(--secondary);
+        }
+
+        input {
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            width: 80%;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .tap-hint {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            animation: breathe 2s infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        #noBtn, #readyNo {
+            position: absolute;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        #chatBox {
+            height: 250px;
+            overflow-y: auto;
+            background: rgba(0,0,0,0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .memory-tag {
+            display: inline-block;
+            padding: 8px 15px;
+            background: var(--glass);
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<div id="canvas-container"></div>
+
+<!-- LOCK SCREEN -->
+<div id="lock" class="screen active">
+    <div class="glass-card">
+        <h2>A little puzzle... 🧩</h2>
+        <p>Where did we first talk? 💭</p>
+        <input type="text" id="code" placeholder="Your answer...">
+        <br>
+        <button onclick="unlock()">Unlock</button>
+    </div>
+</div>
+
+<!-- READY SCREEN -->
+<div id="intro2" class="screen">
+    <div class="glass-card">
+        <h2>Wait... 😏</h2>
+        <p>Before you enter, are you ready to see how much I appreciate you?</p>
+        <div style="position: relative; height: 100px; width: 100%;">
+            <button onclick="next('start')">Yes, I'm ready 💖</button>
+            <button id="readyNo">Nope 😜</button>
+        </div>
+    </div>
+</div>
+
+<!-- START -->
+<div id="start" class="screen">
+    <h1>Hey Beautiful 💕</h1>
+    <div class="glass-card">
+        <p style="font-size: 1.2rem; line-height: 1.6;">
+            I know I'm a bit late for the birthday celebration... 🎂<br><br>
+            But I believe some things are better late than never. I've spent some time making this just for you.
+        </p>
+        <div class="tap-hint">Tap anywhere to continue 💌</div>
+    </div>
+</div>
+
+<!-- TYPEWRITER MESSAGE -->
+<div id="msg1" class="screen">
+    <div class="glass-card">
+        <h2 id="typeText"></h2>
+        <div class="tap-hint">Tap to continue 👆</div>
+    </div>
+</div>
+
+<!-- MEMORY LANE -->
+<div id="memories" class="screen">
+    <h2>Things I Love About You... ✨</h2>
+    <div class="glass-card">
+        <div class="memory-tag">Your Smile 😊</div>
+        <div class="memory-tag">How you handle me 😅</div>
+        <div class="memory-tag">Your Kindness ❤️</div>
+        <div class="memory-tag">Our late night talks 🌙</div>
+        <div class="memory-tag">The way you listen 👂</div>
+        <div class="memory-tag">Your vibes ✨</div>
+        <p style="margin-top:20px">...and honestly, just <b>you</b>.</p>
+        <div class="tap-hint">Tap to continue 👆</div>
+    </div>
+</div>
+
+<!-- GAME: DO YOU LOVE ME -->
+<div id="game" class="screen">
+    <h2>Can I ask you something? 😏</h2>
+    <p>Do you feel the same connection I do?</p>
+    <div style="position: relative; height: 150px; width: 100%;">
+        <button onclick="next('msg2')">Yes, I do! 💖</button>
+        <button id="noBtn">Not really 😜</button>
+    </div>
+</div>
+
+<div id="msg2" class="screen">
+    <div class="glass-card">
+        <h2>My heart just skipped a beat. 💓</h2>
+        <p>I knew there was something special between us.</p>
+        <div class="tap-hint">Tap to continue 👆</div>
+    </div>
+</div>
+
+<!-- HEART GAME -->
+<div id="game2" class="screen">
+    <h2>Catch my heart! 💖</h2>
+    <p>If you catch it, I'll tell you a secret.</p>
+    <div id="movingHeart" style="font-size:60px; cursor:pointer; position:absolute; transition: 0.2s;">💖</div>
+</div>
+
+<!-- Q2 -->
+<div id="q2answer" class="screen">
+    <div class="glass-card">
+        <h2>The Secret... 💭</h2>
+        <p style="white-space: pre-line;">
+            The truth is, even on my busiest days, 
+            a notification from you is the only thing 
+            that makes me instantly smile. 
+            
+            You're not just my "closest friend." 
+            You're my favorite person.
+        </p>
+        <div class="tap-hint">Tap to continue 👆</div>
+    </div>
+</div>
+
+<!-- CHATBOT -->
+<div id="chatbot" class="screen">
+    <div class="glass-card" style="width: 90%;">
+        <h2>Talk to me... 💬</h2>
+        <div id="chatBox"></div>
+        <div style="display:flex;">
+            <input id="chatInput" placeholder="Say something..." style="margin:0; border-radius: 10px 0 0 10px;">
+            <button onclick="sendMsg()" style="margin:0; border-radius: 0 10px 10px 0; padding: 10px;">Send</button>
+        </div>
+    </div>
+</div>
+
+<!-- FINAL -->
+<div id="final" class="screen">
+    <div class="glass-card">
+        <h2>Happy Late Birthday, [Name] 🌹</h2>
+        <p id="letter" style="font-style: italic;"></p>
+        <button onclick="location.reload()">Replay the Magic ✨</button>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// FLOW CONTROL
+let flow = ["start","msg1","memories","game","msg2","game2","q2answer","chatbot","final"];
+let currentScreen = "lock";
+
+// UNLOCK LOGIC
+function unlock(){
+    let val = document.getElementById("code").value.toLowerCase();
+    // TIP: Change "classroom" to whatever your real answer is
+    if(val.includes("classroom")){
+        next("intro2");
+    } else {
+        alert("Incorrect! Hint: Think back to our very first conversation... 😉");
+    }
+}
+
+// NAVIGATION
+function next(id){
+    document.querySelectorAll('.screen').forEach(s => {
+        s.classList.remove('active');
+        s.style.display = "none";
+    });
+    
+    const nextS = document.getElementById(id);
+    nextS.style.display = "flex";
+    setTimeout(() => nextS.classList.add('active'), 50);
+
+    currentScreen = id;
+
+    if(id==="msg1") typeWriter("I know I’m late... but I wanted to make sure this gift was as perfect as you are. ❤️");
+    if(id==="game2") initHeart();
+    if(id==="final") showLetter();
+    if(id==="chatbot") {
+        const box = document.getElementById("chatBox");
+        if(box.innerHTML === "") box.innerHTML = "<p style='color:var(--secondary)'><b>Me:</b> I'm listening... tell me anything. 💖</p>";
+    }
+}
+
+// TAP HANDLER
+document.body.addEventListener("click",(e)=>{
+    if(e.target.tagName==="BUTTON" || e.target.tagName==="INPUT") return;
+    if(["lock", "intro2", "game", "game2", "chatbot"].includes(currentScreen)) return;
+
+    let i = flow.indexOf(currentScreen);
+    if(i !== -1 && i < flow.length - 1){
+        next(flow[i+1]);
+    }
+});
+
+// TYPEWRITER EFFECT
+function typeWriter(text){
+    let el = document.getElementById("typeText");
+    el.innerHTML = "";
+    let i = 0;
+    let timer = setInterval(() => {
+        if(i < text.length){
+            el.innerHTML += text.charAt(i);
+            i++;
+        } else {
+            clearInterval(timer);
+        }
+    }, 50);
+}
+
+// ESCAPING BUTTONS
+document.addEventListener("mouseover", e => {
+    if(e.target.id === "noBtn" || e.target.id === "readyNo"){
+        e.target.style.top = Math.random() * 70 + "%";
+        e.target.style.left = Math.random() * 70 + "%";
+    }
+});
+
+// HEART CATCH GAME
+function initHeart(){
+    let h = document.getElementById("movingHeart");
+    h.style.top = "50%";
+    h.style.left = "50%";
+    
+    h.onmouseover = () => {
+        h.style.top = Math.random() * 80 + "%";
+        h.style.left = Math.random() * 80 + "%";
+    };
+    h.onclick = () => {
+        h.innerHTML = "💘";
+        setTimeout(() => next("q2answer"), 500);
+    };
+}
+
+// CHATBOT LOGIC
+function sendMsg(){
+    let input = document.getElementById("chatInput").value;
+    let box = document.getElementById("chatBox");
+    if(!input) return;
+
+    box.innerHTML += `<p><b>You:</b> ${input}</p>`;
+    let reply = "That's so sweet... keep talking to me. 😊";
+
+    let lowInput = input.toLowerCase();
+    if(lowInput.includes("love")) reply = "I've been waiting to hear that... ❤️";
+    if(lowInput.includes("sorry")) reply = "You never have to say sorry to me. ✨";
+    if(lowInput.includes("cute")) reply = "Not as cute as you! 😏";
+
+    setTimeout(() => {
+        box.innerHTML += `<p style='color:var(--secondary)'><b>Me:</b> ${reply}</p>`;
+        box.scrollTop = box.scrollHeight;
+    }, 800);
+    document.getElementById("chatInput").value = "";
+}
+
+// FINAL LETTER
+function showLetter(){
+    let text = "To my favorite person,\n\nHappy Birthday once again. Meeting you today is the highlight of my week. Thank you for being you, for laughing at my jokes, and for making life a lot more beautiful.\n\nReady for your real gift now? ❤️";
+    document.getElementById("letter").innerText = text;
+    createConfetti();
+}
+
+// BACKGROUND ANIMATION (Floating Shapes)
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.getElementById("canvas-container").appendChild(renderer.domElement);
+
+const geometry = new THREE.SphereGeometry(0.1, 32, 32);
+const material = new THREE.MeshBasicMaterial({ color: 0xff4d6d });
+const particles = [];
+
+for(let i=0; i<100; i++){
+    const p = new THREE.Mesh(geometry, material);
+    p.position.set(Math.random()*20-10, Math.random()*20-10, Math.random()*20-10);
+    scene.add(p);
+    particles.push(p);
+}
+camera.position.z = 5;
+
+function animate() {
+    requestAnimationFrame(animate);
+    particles.forEach(p => {
+        p.position.y += 0.01;
+        if(p.position.y > 5) p.position.y = -5;
+    });
+    renderer.render(scene, camera);
+}
+animate();
+
+function createConfetti() {
+    for(let i=0; i<50; i++) {
+        const div = document.createElement('div');
+        div.style.position = 'fixed';
+        div.style.left = Math.random() * 100 + 'vw';
+        div.style.top = '-10px';
+        div.innerHTML = '❤️';
+        div.style.fontSize = Math.random() * 20 + 10 + 'px';
+        div.style.zIndex = '100';
+        document.body.appendChild(div);
+        
+        let pos = -10;
+        const interval = setInterval(() => {
+            pos += 2;
+            div.style.top = pos + 'px';
+            if(pos > window.innerHeight) {
+                div.remove();
+                clearInterval(interval);
+            }
+        }, 10);
+    }
+}
+</script>
+</body>
+</html>
