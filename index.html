@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Wifey 💖</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #ff9a9e, #fad0c4);
+    text-align: center;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* container */
+.container {
+    padding: 20px;
+    max-width: 500px;
+    margin: auto;
+}
+
+/* heading */
+h1 {
+    color: #ff4d6d;
+    font-size: 28px;
+}
+
+/* card */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 15px 0;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+/* buttons */
+button {
+    padding: 14px 20px;
+    margin: 10px;
+    border-radius: 25px;
+    border: none;
+    background: #ff4d6d;
+    color: white;
+    font-size: 16px;
+    width: 80%;
+    max-width: 250px;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* letters grid */
+.letters {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.letter {
+    padding: 20px;
+    background: #ff4d6d;
+    color: white;
+    border-radius: 15px;
+    font-size: 20px;
+}
+
+/* popup */
+.popup {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    padding: 20px;
+    border-radius: 20px 20px 0 0;
+    display: none;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+/* hearts */
+.heart {
+    position: fixed;
+    font-size: 18px;
+    animation: float 5s linear infinite;
+}
+
+@keyframes float {
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); }
+}
+
+/* responsive text */
+p {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Hey My Cutie 💖</h1>
+
+<div class="card">
+    <p>Before anything… answer honestly 😌</p>
+    <h2>Did you eat your dinner? 🍽️</h2>
+
+    <button onclick="yes()">Yes 😇</button>
+    <button onclick="no()">No 😡</button>
+</div>
+
+<div id="response" class="card" style="display:none;"></div>
+
+<h2>Tap the letters 💌</h2>
+
+<div class="letters">
+    <div class="letter" onclick="showMsg(0)">💌</div>
+    <div class="letter" onclick="showMsg(1)">💌</div>
+    <div class="letter" onclick="showMsg(2)">💌</div>
+    <div class="letter" onclick="showMsg(3)">💌</div>
+</div>
+
+<h2>For you 💖</h2>
+
+<div class="card">
+    <p><b>"You are my home."</b><br>
+    Means: I feel safe with you ❤️</p>
+
+    <p><b>"I choose you every day."</b><br>
+    Means: Always you 💕</p>
+</div>
+
+</div>
+
+<!-- popup -->
+<div id="popup" class="popup"></div>
+
+<script>
+
+// dinner
+function yes(){
+    let r = document.getElementById("response");
+    r.style.display="block";
+    r.innerHTML = "Good girl 😌💖<br>I’m proud of you.<br>Now come here 😏";
+}
+
+function no(){
+    let r = document.getElementById("response");
+    r.style.display="block";
+    r.innerHTML = "WHAT 😡<br>Go eat NOW 😤<br>Or I’ll come feed you 😏💖";
+}
+
+// letters
+let messages = [
+"I love you sooo much 💖",
+"You are my best person 🥺",
+"I will always annoy you 😈",
+"You are my home ❤️"
+];
+
+function showMsg(i){
+    let p = document.getElementById("popup");
+    p.style.display="block";
+    p.innerHTML = messages[i] + "<br><br><button onclick='closePop()'>Close</button>";
+}
+
+function closePop(){
+    document.getElementById("popup").style.display="none";
+}
+
+// hearts
+setInterval(()=>{
+    let h = document.createElement("div");
+    h.className="heart";
+    h.innerHTML="💖";
+    h.style.left = Math.random()*100+"vw";
+    document.body.appendChild(h);
+
+    setTimeout(()=>h.remove(),5000);
+},400);
+
+</script>
+
+</body>
+</html>
